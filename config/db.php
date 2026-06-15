@@ -5,10 +5,15 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'doctor_booking_system');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+$dbHost = getenv('DB_HOST');
+$dbName = getenv('DB_NAME');
+$dbUser = getenv('DB_USER');
+$dbPass = getenv('DB_PASS');
+
+define('DB_HOST', $dbHost !== false && $dbHost !== '' ? $dbHost : 'localhost');
+define('DB_NAME', $dbName !== false && $dbName !== '' ? $dbName : 'doctor_booking_system');
+define('DB_USER', $dbUser !== false && $dbUser !== '' ? $dbUser : 'root');
+define('DB_PASS', $dbPass !== false ? $dbPass : '');
 
 try {
     $pdo = new PDO(
