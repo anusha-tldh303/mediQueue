@@ -1,10 +1,9 @@
 services:
   web:
     build: .
+    container_name: mediqueue-web
     ports:
       - "80:80"
-    depends_on:
-      - db
     environment:
       DB_HOST: database-medi.chqe2ei0yzi8.ap-south-1.rds.amazonaws.com
       DB_NAME: doctor_booking_system
