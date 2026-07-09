@@ -5,19 +5,20 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-$dbHost = getenv('DB_HOST');
-$dbName = getenv('DB_NAME');
-$dbUser = getenv('DB_USER');
-$dbPass = getenv('DB_PASS');
+// Read database settings from environment variables
+$dbHost = getenv('DB_HOST') ?: 'database-medi.chqe2ei0yzi8.ap-south-1.rds.amazonaws.com';
+$dbName = getenv('DB_NAME') ?: 'doctor_booking_system';
+$dbUser = getenv('DB_USER') ?: 'admin';
+$dbPass = getenv('DB_PASS') ?: 'medi0012';
 
-define('DB_HOST', $dbHost !== false && $dbHost !== '' ? $dbHost : 'localhost');
-define('DB_NAME', $dbName !== false && $dbName !== '' ? $dbName : 'doctor_booking_system');
-define('DB_USER', $dbUser !== false && $dbUser !== '' ? $dbUser : 'root');
-define('DB_PASS', $dbPass !== false ? $dbPass : '');
+define('DB_HOST', $dbHost);
+define('DB_NAME', $dbName);
+define('DB_USER', $dbUser);
+define('DB_PASS', $dbPass);
 
 try {
     $pdo = new PDO(
-        'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8mb4',
+        "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4",
         DB_USER,
         DB_PASS,
         [
@@ -28,7 +29,7 @@ try {
     );
 } catch (PDOException $exception) {
     http_response_code(500);
-    exit('Database connection failed. Please check your XAMPP MySQL settings and import the SQL file.');
+    exit("Database connection failed: " . $exception->getMessage());
 }
 
 require_once __DIR__ . '/../includes/functions.php';
